@@ -1,0 +1,17 @@
+{
+  "name": "instadm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "instagram-private-api": "^1.7.0",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.5.6"
+  }
+}
