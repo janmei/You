@@ -1,13 +1,17 @@
 // import 'dotenv/config';
 import { IgApiClient } from 'instagram-private-api';
-import { readFileSync } from 'fs';
 import { DirectThreadBroadcastOptions } from 'instagram-private-api/dist/types/direct-thread.broadcast.options';
-import * as mongoose from "mongoose";
 
 import express = require('express');
 
-const uri: string = "mongodb://127.0.0.1:27017/ig";
+const {
+    getStories,
+    getMediaByCode,
+    getUserByUsername
+} = require('instagram-stories')
 
+const USERNAME = ""
+const PASSWORD = ""
 
 // Create a new express application instance
 const app: express.Application = express();
@@ -24,7 +28,7 @@ function fakeSave(cookies: string) {
 (async () => {
     const ig = new IgApiClient();
 
-    ig.state.generateDevice("jan_meininghaus");
+    ig.state.generateDevice(USERNAME);
     // ig.state.proxyUrl = process.env.IG_PROXY;
 
     // This function executes after every request
@@ -38,39 +42,44 @@ function fakeSave(cookies: string) {
         await ig.state.deserializeCookieJar(JSON.stringify(cookies));
     });
     // This call will provoke request.$end stream
-    await ig.account.login("jan_meininghaus", "*u0w6%2pU#%11MTtvnKVG4");
+    await ig.account.login(USERNAME, PASSWORD);
     const inboxFeed = ig.feed.directInbox();
     const threads = await inboxFeed.items();
 
     // UNCOMMENT BELOW TO PUSH MESSAGE 
-    app.post('/:userId', function (req, res) {
+    app.get('/:userId', function (req, res) {
+        const username = req.params.userId;
 
-        const options: DirectThreadBroadcastOptions = {
-            form: {
-                text: "test"
-            },
-            item: "text",
-            userIds: req.params.userId,
+        getUserByUsername(username).then((
+            user
+        ) => {
+            // console.log(user);
 
-        }
+            const options: DirectThreadBroadcastOptions = {
+                form: {
+                    text: "test"
+                },
+                item: "text",
+                userIds: user.graphql.user.id,
+            }
+            console.log(options);
 
-        const thread = ig.directThread.broadcast(options)
-        res.send(options);
-
+            const thread = ig.directThread.broadcast(options)
+            res.send(thread);
+        })
     });
 
+    // Prepare for getting other data
+    // app.get('/:userId', function (req, res) {
+    //     (async () => {
+    //         let userId = req.params.userId
 
-    app.get('/:userId', function (req, res) {
-        (async () => {
-            let userId = req.params.userId
+    //         const feed = await ig.feed.user(userId).items()
+    //         console.log(feed);
 
-
-            const feed = await ig.feed.user(userId).items()
-            console.log(feed);
-
-            res.send(feed)
-        })();
-    })
+    //         res.send(feed)
+    //     })();
+    // })
 
     // await thread.broadcastText("Sorry wenn ich spamme.");
 })();

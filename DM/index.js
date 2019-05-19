@@ -39,7 +39,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // import 'dotenv/config';
 var instagram_private_api_1 = require("instagram-private-api");
 var express = require("express");
-var uri = "mongodb://127.0.0.1:27017/ig";
+var _a = require('instagram-stories'), getStories = _a.getStories, getMediaByCode = _a.getMediaByCode, getUserByUsername = _a.getUserByUsername;
+var USERNAME = "";
+var PASSWORD = "";
 // Create a new express application instance
 var app = express();
 // define options for the direct message with 
@@ -54,7 +56,7 @@ function fakeSave(cookies) {
         switch (_a.label) {
             case 0:
                 ig = new instagram_private_api_1.IgApiClient();
-                ig.state.generateDevice("jan_meininghaus");
+                ig.state.generateDevice(USERNAME);
                 // ig.state.proxyUrl = process.env.IG_PROXY;
                 // This function executes after every request
                 ig.request.end$.subscribe(function () { return __awaiter(_this, void 0, void 0, function () {
@@ -75,7 +77,7 @@ function fakeSave(cookies) {
                     });
                 }); });
                 // This call will provoke request.$end stream
-                return [4 /*yield*/, ig.account.login("jan_meininghaus", "*u0w6%2pU#%11MTtvnKVG4")];
+                return [4 /*yield*/, ig.account.login(USERNAME, PASSWORD)];
             case 1:
                 // This call will provoke request.$end stream
                 _a.sent();
@@ -84,34 +86,21 @@ function fakeSave(cookies) {
             case 2:
                 threads = _a.sent();
                 // UNCOMMENT BELOW TO PUSH MESSAGE 
-                app.post('/:userId', function (req, res) {
-                    var options = {
-                        form: {
-                            text: "test"
-                        },
-                        item: "text",
-                        userIds: req.params.userId,
-                    };
-                    var thread = ig.directThread.broadcast(options);
-                    res.send(options);
-                });
                 app.get('/:userId', function (req, res) {
-                    var _this = this;
-                    (function () { return __awaiter(_this, void 0, void 0, function () {
-                        var userId, feed;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0:
-                                    userId = req.params.userId;
-                                    return [4 /*yield*/, ig.feed.user(userId).items()];
-                                case 1:
-                                    feed = _a.sent();
-                                    console.log(feed);
-                                    res.send(feed);
-                                    return [2 /*return*/];
-                            }
-                        });
-                    }); })();
+                    var username = req.params.userId;
+                    getUserByUsername(username).then(function (user) {
+                        // console.log(user);
+                        var options = {
+                            form: {
+                                text: "test"
+                            },
+                            item: "text",
+                            userIds: user.graphql.user.id,
+                        };
+                        console.log(options);
+                        var thread = ig.directThread.broadcast(options);
+                        res.send(thread);
+                    });
                 });
                 return [2 /*return*/];
         }

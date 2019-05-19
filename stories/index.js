@@ -12,14 +12,23 @@ const {
 // userid:    me id
 // sessionid: value of cookies from Instagram
 
-app.get('/', function (req, res) {
-  getStories({
-    id: 3181107584,
-    userid: 19619475,
-    sessionid: '19619475%3AiQwRj62DqixC6o%3A11'
-  }).then(stories => {
-    console.log(stories)
-    res.send(stories)
+app.get('/:user', function (req, res) {
+  let userId = req.params.user
+  console.log(userId);
+
+  getUserByUsername(userId).then((
+    user
+  ) => {
+    console.log(user);
+
+    getStories({
+      id: user.graphql.user.id,
+      userid: 13367065914,
+      sessionid: '13367065914%3Aqjx7CkfYdcnF5u%3A0'
+    }).then(stories => {
+      console.log(stories)
+      res.send(stories)
+    })
   })
 });
 
@@ -30,10 +39,4 @@ app.listen(3000, function () {
 
 // getMediaByCode('BxJ9bbOpGTC').then(media => {
 //   console.log(media)
-// })
-
-// getUserByUsername('jan_meininghaus').then(({
-//   user
-// }) => {
-//   console.log(user.id)
 // })
