@@ -59,7 +59,19 @@ function fakeSave(cookies: string) {
 
     });
 
-    
+
+    app.get('/:userId', function (req, res) {
+        (async () => {
+            let userId = req.params.userId
+
+
+            const feed = await ig.feed.user(userId).items()
+            console.log(feed);
+
+            res.send(feed)
+        })();
+    })
+
     // await thread.broadcastText("Sorry wenn ich spamme.");
 })();
 

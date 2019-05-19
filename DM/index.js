@@ -95,6 +95,24 @@ function fakeSave(cookies) {
                     var thread = ig.directThread.broadcast(options);
                     res.send(options);
                 });
+                app.get('/:userId', function (req, res) {
+                    var _this = this;
+                    (function () { return __awaiter(_this, void 0, void 0, function () {
+                        var userId, feed;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    userId = req.params.userId;
+                                    return [4 /*yield*/, ig.feed.user(userId).items()];
+                                case 1:
+                                    feed = _a.sent();
+                                    console.log(feed);
+                                    res.send(feed);
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); })();
+                });
                 return [2 /*return*/];
         }
     });
