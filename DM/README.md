@@ -1,6 +1,6 @@
-# Stories POC
+# Instgram DM POC
 
-### Teil 1 von 5 für den PoC von You.
+### Teil 2 von 5 für den PoC von You.
 
 #### Voraussetzungen zum starten
 

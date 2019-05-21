@@ -1,6 +1,6 @@
 # Facial recognition POC
 
-### Teil 2 von 5 für den PoC von You.
+### Teil 3 von 5 für den PoC von You.
 
 PoC ist in den Beispielen eingebaut und wurde angepasst. Zeigt auch die Fähigkeiten, die die Library kann
 Komandos zum starten nach dem clonen:
