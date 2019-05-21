@@ -1,4 +1,4 @@
-# Facial recognition POC
+# Facial Detection POC
 
 ### Teil 3 von 5 für den PoC von You.
 
@@ -10,4 +10,6 @@ npm i
 node server.js
 ```
 
-Es sollte danach alles funktionieren.
+Danach sollte es so aussehen: 
+
+![Webseite mit Facial Detection](screenshot.jpeg "Facial Detection")
