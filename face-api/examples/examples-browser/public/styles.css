@@ -80,3 +80,7 @@
   color: #fff;
   background-color: #5B9BE4;
 }
+
+.BoundingBox {
+  filter:blur(4px);
+}
